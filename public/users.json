@@ -1,0 +1,27 @@
+[
+   {
+     "id": 1,
+     "name": "Merna",
+     "building_list": []
+   },
+   {
+    "id": 2,
+    "name": "Marina",
+    "building_list": []
+  },
+  {
+    "id": 3,
+    "name": "Alaa",
+    "building_list": []
+  },
+  {
+    "id": 4,
+    "name": "Nada",
+    "building_list": []
+  },
+  {
+    "id": 5,
+    "name": "Mai",
+    "building_list": []
+  }
+]

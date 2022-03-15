@@ -5,7 +5,6 @@
     <!-- <InputField title='name' placeholder='Building' variant='contained' errorMsg='reqired' /> -->
         <InputField :fields="text_sample"/>
         <Autocomplete :fields='select_sample' />
-<p>{{text_sample.text}}</p>
     <GoogleMap
       :disableUI="false"
       :zoom="12"
@@ -19,11 +18,14 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { Options, prop, Vue } from "vue-class-component";
 import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
 import GoogleMap from "@/components/GoogleMap/index.vue";
 import InputField from '@/components/Controls/InputField.vue';
 import Autocomplete from '@/components/Controls/Autocomplete.vue';
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+
 
 @Options({
   components: {
@@ -34,18 +36,42 @@ import Autocomplete from '@/components/Controls/Autocomplete.vue';
   },
 })
 export default class HomeView extends Vue {
-  data(){
-    return{
-        text_sample: {
+  // data(){
+  //   return{
+    //     text_sample: {
+    //   label: 'Enter Text',
+    //   text: ''
+    // },
+    //  select_sample: {
+    //   label: 'Select Item',
+    //   answers: ['Red', 'Blue', 'Green', 'Black'],
+    //   selected: '',
+    //   varient: 'outlined'
+    // },
+  //   }
+  // };
+   setup () {
+    const store = useStore()
+    const text_sample = ref({
       label: 'Enter Text',
-      text: ''
-    },
-     select_sample: {
-      label: 'Select Item',
+      text: 'jnm,'
+    })
+    const select_sample = {
+         label: 'Select Item',
       answers: ['Red', 'Blue', 'Green', 'Black'],
       selected: '',
       varient: 'outlined'
-    },
+    }
+
+    
+    return {
+            text_sample
+    //  select_sample,
+      // // access a mutation
+      // increment: () => store.commit('increment'),
+
+      // // access an action
+      // asyncIncrement: () => store.dispatch('asyncIncrement')
     }
   }
 }

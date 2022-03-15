@@ -51,7 +51,7 @@ export default {
 
       var myLatlng = new google.maps.LatLng(31.2001, 29.9187);
       const marker = new google.maps.Marker({
-        position: { lat: 31.2001, lng: 29.9187 },
+        position: props.center,
         map: map.value,
         draggable: true,
         title: "Drag me!",

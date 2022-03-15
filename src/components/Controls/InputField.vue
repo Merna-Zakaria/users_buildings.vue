@@ -3,12 +3,12 @@
     <v-container>
       <v-row>
         <v-col sm="3">
-          <p>{{ title }}</p>
+          <p>{{ field.title }}</p>
         </v-col>
 
         <v-col sm="6">
             <v-text-field
-            v-model="field.text"
+            v-model="field.value"
             :label="field.label"
             variant='outlined'
           ></v-text-field>
@@ -33,14 +33,19 @@
 export default {
   name: "InputField",
   props:  ['fields'],
-   data() {
-        return {
-            field: this.fields
-        };
-    },
-      created() {
-        this.$emit("fields", this.field);
-    },
+  setup(props){
+    let field = props.fields
+  return{
+   field
+  }
+  }
+
+  // props:  ['fields'],
+  //  data() {
+  //       return {
+  //           field: this.fields
+  //       };
+  //   }
   // props: ['title', 'label'],
   // props:{
   //   title:{
