@@ -8,6 +8,8 @@ import { RootState } from '../types';
 export const state: UserState = {
     user: undefined,
     users: [],
+    country: undefined,
+    countries: [],
     error: false
 };
 

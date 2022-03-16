@@ -22,5 +22,6 @@ export interface UserState {
     users?: Array<User>;
     building?: Building;
     country?: Country;
+    countries?: Array<Country>;
     error: boolean;
 }
