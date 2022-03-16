@@ -1,10 +1,13 @@
 <template>
-   <v-btn
+   <div :class="style">
+       <v-btn
       :color="color"
       :text-color="textColor"
+      :variant="variant"
     >
       {{text}}
     </v-btn>
+   </div>
 </template>
 <script>
 export default {
@@ -12,15 +15,23 @@ export default {
   props: {
     text: {
       type: String,
-      defaut: "",
+      default: "",
     },
     color: {
       type: String,
-      defaut: "primary",
+      default: "primary",
     },
     textColor: {
       type: String,
-      defaut: "white",
+      default: "white",
+    },
+     style: {
+      type: String,
+      default: "",
+    },
+     variant: {
+      type: String,
+      default: "contained",
     },
   },
  
