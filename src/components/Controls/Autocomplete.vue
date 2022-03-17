@@ -3,61 +3,36 @@
     <v-container>
       <v-row>
         <v-col sm="3">
-          <p>{{ title || "" }}</p>
+          <p>{{ field.title || "" }}</p>
         </v-col>
         <v-col sm="6">
           <v-autocomplete
-            v-model="modelValue"
+            v-model="field.value"
             :items="items"
-            :label="label"
-            :value="modelValue"
-            :item-text="itemText"
-            :item-value="itemValue"
-            :variant="variant"
-            @input="$emit('update:modelValue', '$event.target.value')"
+            :label="field.label"
+            :item-text="field.itemText"
+            :item-value="field.itemValue"
+            :variant="field.variant"
           ></v-autocomplete>
         </v-col>
       </v-row>
     </v-container>
   </v-form>
 </template>
+
 <script>
 export default {
   name: "Autocomplete",
-  props: {
-    title: {
-      type: String,
-      defaut: "",
-    },
-    modelValue: {
-      type: [String, Number],
-      defaut: "",
-    },
-    items: {
-      type: Array,
-      defaut: "",
-    },
-    value: {
-      type: Object,
-      defaut: "",
-    },
-    label: {
-      type: String,
-      defaut: "",
-    },
-    variant: {
-      type: String,
-      defaut: "",
-    },
-    itemText: {
-      type: String,
-      defaut: "",
-    },
-    itemValue: {
-      type: String,
-      defaut: "",
-    },
-  },
- 
+  props:  ['fields', 'items'],
+  setup(props){
+    let field = props.fields
+    let itemsArr = props.items
+  return{
+   field,
+   itemsArr
+  }
+  }
 };
+
 </script>
+
