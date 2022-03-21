@@ -1,8 +1,8 @@
 <template>
   <v-form>
     <v-container>
-      <v-row>
-        <v-col sm="3">
+      <v-row class="justify-center">
+        <v-col sm="2">
           <p>{{ field.title }}</p>
         </v-col>
 
