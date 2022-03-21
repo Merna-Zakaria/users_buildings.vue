@@ -53,10 +53,10 @@ export default {
             ) {
               newResults.value.push(element);
             }
-            else{
-              newResults.value = [];
-              newResults.value.push({name:'No result found', id:0});
-            }
+            // else{
+            //   newResults.value = [];
+            //   newResults.value.push({name:'No result found', id:0});
+            // }
           });
         }
       },

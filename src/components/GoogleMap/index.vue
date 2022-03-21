@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { ref, onBeforeMount, onMounted } from "vue";
+import { ref, watch, onMounted } from "vue";
 
 export default {
   name: "GoogleMap",
@@ -63,6 +63,13 @@ export default {
         strokeColor: "red",
       });
     };
+
+      watch(() => props.geojson,
+      (newValue, oldValue) => {
+        window.initMap()       
+      },
+      { deep: true }
+    );
 
     return {
       mapDivRef,
