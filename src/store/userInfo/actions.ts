@@ -1,6 +1,6 @@
 import { ActionTree } from 'vuex';
 import axios from 'axios';
-import { UserState, Building, User, Country } from './types';
+import { UserState, Building, User, Country, CountriesGeojson } from './types';
 import { RootState } from '../types';
 
 export const actions: ActionTree<UserState, RootState> = {
@@ -17,7 +17,6 @@ export const actions: ActionTree<UserState, RootState> = {
                 commit('GET_USERS', payload);
             }
         }, (error) => {
-            console.log(error);
             commit('USER_INFO_ERROR');
         });
     },
@@ -34,7 +33,21 @@ export const actions: ActionTree<UserState, RootState> = {
                 commit('GET_COUNTRIES', payload);
             }
         }, (error) => {
-            console.log(error);
+            commit('USER_INFO_ERROR');
+        });
+    },
+    getCountryGeojsonRequest({ commit }, country): any {
+        axios({
+            method: 'get',
+            url: 'countriesGeo.json'
+        }).then((response) => {
+            const payload: CountriesGeojson = response && response.data;
+          
+                const countryGeojson = payload?.features.find((item: Country) => item.id === country.id)
+                const countrySelected = {...country, geojson: {type:"FeatureCollection",features:[countryGeojson]}}
+                commit('GET_COUNTRY', countrySelected)
+     
+        }, (error) => {
             commit('USER_INFO_ERROR');
         });
     },

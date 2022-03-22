@@ -10,7 +10,11 @@ export const state: UserState = {
     users: [],
     country: undefined,
     countries: [],
-    error: false
+    error: false,
+    CountriesGeojson: {  
+        type: '',
+        features: []}
+
 };
 
 const namespaced: boolean = true;

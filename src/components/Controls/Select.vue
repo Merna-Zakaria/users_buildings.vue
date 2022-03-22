@@ -13,7 +13,7 @@
           @focus="onToggle"
           class="py-7"
         />
-        <div class="results" v-if="toggle">
+        <div class="results" v-if="toggle" height="100%">
           <div class="result" v-for="item in newResults" :key="item.id">
             <span @click="selectResult(item)" @mousedown.prevent>
               {{ item[field.itemText] }}

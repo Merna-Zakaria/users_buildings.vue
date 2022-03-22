@@ -15,7 +15,14 @@ export interface Country {
     id: string;
     name: string;
     position: Array<number>;
+    geojson: object
 }
+
+export interface CountriesGeojson {
+    type: string;
+    features: []
+}
+
 
 export interface UserState {
     user?: User;
@@ -24,4 +31,5 @@ export interface UserState {
     country?: Country;
     countries?: Array<Country>;
     error: boolean;
+    CountriesGeojson: CountriesGeojson;
 }
