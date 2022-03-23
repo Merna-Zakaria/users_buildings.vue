@@ -13,6 +13,7 @@ export default {
     mapType: String,
     disableUI: Boolean,
     geojson: JSON,
+    markerLabel: String
   },
   setup(props) {
     // the google map object
@@ -53,7 +54,7 @@ export default {
       const marker = new google.maps.Marker({
         position: props.center,
         map: map.value,
-        draggable: true,
+        // draggable: true,
         title: "Drag me!",
       });
 

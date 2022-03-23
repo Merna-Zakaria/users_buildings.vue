@@ -1,5 +1,5 @@
 <template>
-   <div :class="style">
+   <div :class="style" @click="handleClick">
        <v-btn
       :color="color"
       :text-color="textColor"
@@ -33,6 +33,7 @@ export default {
       type: String,
       default: "contained",
     },
+    handleClick: Function
   },
  
 };

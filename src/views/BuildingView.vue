@@ -1,24 +1,33 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col md="2">
-        <v-card class="pa-5" height="800px">
-          <h3>Buildings</h3>
-          <div v-if="user?.building_list" class="rounded-lg" outlined>
-            <ul v-for="build in user?.building_list" :key="build.id">
-              <li @click="handleMapView(build?.country_info)">
-                {{ build.building_name }}
-              </li>
-            </ul>
-          </div>
-        </v-card>
-      </v-col>
-      <v-col md="10">
-        <v-card class="pa-5" height="800px">
-          <form>
-            <Select :fields="clientNameField" />
-            <InputField :fields="buildingNameField" />
-            <Select :fields="countryField" />
+    <form>
+      <Select :fields="clientNameField" />
+      <v-row>
+        <v-col md="2">
+          <v-card class="pa-5" height="600px">
+            <h3 class="mb-8">Buildings</h3>
+            <div v-if="user?.building_list.length" class="rounded-lg" outlined>
+              <ul v-for="build in user?.building_list" :key="build.id">
+                <li
+                  @click="handleSelectBuilding(build?.country_info)"
+                  class="cursor-pointer"
+                >
+                  {{ build.building_name }}
+                </li>
+              </ul>
+            </div>
+            <div v-if="user?.building_list?.length === 0">
+              No Building Found
+            </div>
+            <Button text="Add Building" color="primary" :handleClick="handleSAddBuildBtn"/>
+          </v-card>
+        </v-col>
+        <v-col md="10">
+          <v-card class="pa-5" height="600px">
+            <div v-if="hideSection">
+              <InputField :fields="buildingNameField" />
+              <Select :fields="countryField" />
+            </div>
             <!-- <GoogleMap
               :disableUI="false"
               :zoom="4"
@@ -30,6 +39,7 @@
             </GoogleMap> -->
             <div v-if="buildingSelected?.id">
               <GoogleMap
+                :markerLabel="buildingSelected?.name"
                 :disableUI="false"
                 :zoom="4"
                 mapType="roadmap"
@@ -41,17 +51,14 @@
               >
               </GoogleMap>
             </div>
-            <p>
-              {{ user?.name }}
-            </p>
-            <div class="d-flex justify-end mx-6 my-6">
+            <div class="d-flex justify-end mx-6 my-6" v-if="hideSection">
               <Button text="Create" color="primary" />
               <Button text="Cancel" color="primary" variant="outlined" />
             </div>
-          </form>
-        </v-card>
-      </v-col>
-    </v-row>
+          </v-card>
+        </v-col>
+      </v-row>
+    </form>
   </v-container>
 </template>
 
@@ -76,20 +83,16 @@ export default {
 
   setup(props) {
     const store = useStore();
+    let hideSection = ref(false);
+    // let hideMap = ref(false);
+    let buildingSelected = ref({});
     let user = computed(() => store.state.userInfo.user);
     let userList = computed(() => store.state.userInfo.users);
     let countryList = computed(() => store.state.userInfo.countries);
     let countryGeojson = computed(() => store.state.userInfo.country);
-    let buildingSelected = ref({});
 
     store.dispatch("userInfo/getUsersRequest", "");
     store.dispatch("userInfo/getCountriesRequest", "");
-
-    const buildingNameField = reactive({
-      title: "name",
-      label: "Building Name",
-      value: "",
-    });
 
     const clientNameField = reactive({
       title: "",
@@ -99,6 +102,12 @@ export default {
       items: userList,
       value: "",
       valueObj: {},
+    });
+
+    const buildingNameField = reactive({
+      title: "name",
+      label: "Building Name",
+      value: "",
     });
 
     const countryField = reactive({
@@ -115,6 +124,17 @@ export default {
       buildingSelected.value = building;
     };
 
+    const handleSelectBuilding = (building) => {
+      handleMapView(building);
+      //  buildingNameField.value = ''
+      // countryField.value = ''
+      // countryField.valueObj = {}
+    };
+
+   const handleSAddBuildBtn = () => {
+     hideSection.value = true
+    };
+
     watch(
       () => countryGeojson.value,
       (newValue, oldValue) => {
@@ -126,7 +146,13 @@ export default {
     watch(
       () => clientNameField.valueObj,
       (newValue, oldValue) => {
-        store.dispatch("userInfo/getUsersRequest", newValue.id);
+        if (newValue) {
+          store.dispatch("userInfo/getUsersRequest", newValue.id);
+        }
+        // hideSection.value = true
+        // buildingNameField.value = ''
+        // countryField.value = ''
+        // countryField.valueObj = {}
       },
       { deep: true }
     );
@@ -136,7 +162,22 @@ export default {
       (newValue, oldValue) => {
         if (newValue === "") {
           buildingSelected.value = {};
-          store.commit("userInfo/GET_USER", {});
+          store.commit("userInfo/GET_USER", {
+            id: 0,
+            name: "",
+            building_list: [],
+          });
+        }
+      },
+      { deep: true }
+    );
+
+    watch(
+      user,
+      (newValue, oldValue) => {
+        let hasBuild = [...user?.value?.building_list][0]?.country_info;
+        if (hasBuild) {
+          handleMapView(hasBuild);
         }
       },
       { deep: true }
@@ -145,13 +186,17 @@ export default {
     watch(
       () => countryField.valueObj,
       (newValue, oldValue) => {
-        store.dispatch("userInfo/getCountryGeojsonRequest", newValue);
+        if (newValue) {
+          store.dispatch("userInfo/getCountryGeojsonRequest", newValue);
+        }
       },
       { deep: true }
     );
     return {
       user,
+      // hideMap,
       userList,
+      hideSection,
       countryList,
       countryField,
       handleMapView,
@@ -159,7 +204,15 @@ export default {
       clientNameField,
       buildingSelected,
       buildingNameField,
+      handleSAddBuildBtn,
+      handleSelectBuilding,
     };
   },
 };
 </script>
+
+<style scoped>
+.cursor-pointer {
+  cursor: pointer;
+}
+</style>

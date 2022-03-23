@@ -15,7 +15,7 @@
         />
         <div class="results" v-if="toggle" height="100%">
           <div class="result" v-for="item in newResults" :key="item.id">
-            <span @click="selectResult(item)" @mousedown.prevent>
+            <span @click="selectResult(item)" @mousedown.prevent class="cursor-pointer">
               {{ item[field.itemText] }}
             </span>
           </div>
@@ -85,6 +85,9 @@ export default {
 };
 </script>
 <style scoped>
+.cursor-pointer {
+  cursor: pointer;
+}
 .results {
   position: absolute;
   width: 80%;
